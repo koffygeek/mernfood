@@ -34,17 +34,44 @@ router.post("/register", async (request, response) => {
   }
 });
 
-
 // route for user login
 router.post("/login", async (request, response) => {
   try {
-
     const { email, password } = request.body;
     const user = await User.findOne({ email });
-    if
-} catch (error) {
-  console.error(error);
-  response.status(500).send("Server error");
-}
-})
-)
+    if (!user) {
+      return response.status(400).json({ msg: "Invalid credentiels" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (isMatch) {
+      const payload = {
+        id: user._id,
+        email: user.email,
+      };
+
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: "3600" },
+        (error, token) => {
+          if (error) throw error;
+          response.json({
+            token,
+            user: {
+              id: user._id,
+              email: user.email,
+            },
+          });
+        }
+      );
+    } else {
+      return response.status(400).json({ msg: "Invalid credentiels" });
+    }
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("Server error");
+  }
+});
+
+export { router as authRouter };
