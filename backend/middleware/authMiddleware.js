@@ -1,12 +1,10 @@
 import jwt from "jsonwebtoken";
 
-const auth = async (request, response, next) => {
-  const authHeader = request.headers["authorization"];
+const auth = async (req, res, next) => {
+  const authHeader = req.headers["authorization"];
 
-  if (!authHeader) {
-    return response
-      .status(401)
-      .json({ message: "No tokenn authorization denied" });
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ msg: "No token, authorization denied" });
   }
   const token = authHeader.split(" ")[1];
 
@@ -14,9 +12,9 @@ const auth = async (request, response, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     request.user = decoded;
     next();
-  } catch (error) {
+  } catch (e) {
     console.error("Token verification failed", e.message);
-    response.status(401).json({ message: "Token is not valid" });
+    res.status(401).json({ msg: "Token is not valid" });
   }
 };
 

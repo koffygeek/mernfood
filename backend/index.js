@@ -2,6 +2,10 @@ import express from "express";
 import { config } from "dotenv";
 import mongoose from "mongoose";
 import foodRoute from "./routes/foodRoute.js";
+import { authRouter } from "./controllers/authController.js";
+import { auth } from "./middleware/authMiddleware.js";
+import cors from "cors";
+import User from "./models/user.js";
 
 config();
 
@@ -18,3 +22,9 @@ mongoose
 
 app.use(express.json());
 app.use("/food", foodRoute);
+
+app.use(cors());
+
+app.use("/auth", authRouter);
+
+app.use(auth);
