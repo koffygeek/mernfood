@@ -11,6 +11,8 @@ config();
 
 const app = express();
 
+app.use(cors());
+
 app.listen(process.env.PORT, () =>
   console.log(`Server koffi running on port ${process.env.PORT} PORT`)
 );
@@ -22,8 +24,6 @@ mongoose
 
 app.use(express.json());
 app.use("/food", foodRoute);
-
-app.use(cors());
 
 app.use("/auth", authRouter);
 
