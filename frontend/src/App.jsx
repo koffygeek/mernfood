@@ -1,5 +1,31 @@
-export default function App() {
+import Admin from "./pages/Admin";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { Routes, Route, useLocation } from "react-router-dom";
+
+const App = () => {
   return (
-    <div className="text-3xl text-red-300 font-bold underline">Hello World</div>
+    <>
+      <Routes>
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute>
+              <AdminRoutes />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      <Admin />
+    </>
   );
-}
+};
+
+const AdminRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Admin />} />
+    </Routes>
+  );
+};
+
+export default App;
