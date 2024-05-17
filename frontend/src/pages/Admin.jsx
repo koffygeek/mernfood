@@ -29,9 +29,10 @@ const Admin = () => {
       >
         Add Item +
       </Link>
-      <div>
-        <table>
-          <thead>
+
+      <div className="overflow-x-auto shadow-md rounded-lg">
+        <table className="w-full text-left">
+          <thead className="uppercase bg-gray-200">
             <tr>
               <th scope="col" className="py-3 px-5">
                 #
@@ -49,17 +50,23 @@ const Admin = () => {
           </thead>
           <tbody>
             {food.map((food, index) => (
-              <tr>
+              <tr key={food.id} className="bg-white hover:bg-gray-300">
                 <td className="py-3 px-5">{index + 1} </td>
                 <td className="py-3 px-5">{food.name} </td>
                 <td className="py-3 px-5">{food.priceInCents} </td>
                 <td className="py-3 px-5">
-                  <div>
-                    <div>
-                      <Link to="/" className>
+                  <div className="flex justify-center gap-x-4">
+                    <div className="flex justify-center gap-x-1">
+                      <Link
+                        to="/"
+                        className="bg-orange-500 hover:bg-orange-900 text-white py-2 px-4 font- rounded-l-lg text-sm"
+                      >
                         Edit
                       </Link>
-                      <Link to="/" className>
+                      <Link
+                        to="/"
+                        className="bg-red-500 hover:bg-orange-900 text-white py-2 px-4 font- rounded-r-lg text-sm"
+                      >
                         Delete
                       </Link>
                     </div>
